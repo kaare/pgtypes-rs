@@ -1,0 +1,10 @@
+[package]
+name = "pgtypes"
+version = "0.1.0"
+authors = ["Kaare Rasmussen <kaare@jasonic.dk>"]
+build = "build.rs"
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.25.0"
