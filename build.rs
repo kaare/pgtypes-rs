@@ -4,9 +4,10 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    // Tell cargo to tell rustc to link the system bzip2
-    // shared library.
-    println!("cargo:rustc-link-search=./postgresql-10beta1/src/interfaces/ecpg/pgtypeslib/");
+    // Tell cargo to tell rustc to link the pgtypes lib
+    // println!("cargo:rustc-link-search=./postgresql-10beta1/src/interfaces/ecpg/pgtypeslib/");
+    println!("cargo:rustc-link-search=/usr/local/pgsql/lib64/");
+    println!("cargo:rustc-link-lib=pgtypes");
 
     // The bindgen::Builder is the main entry point
     // to bindgen, and lets you build up options for
@@ -16,11 +17,12 @@ fn main() {
         // requires a nightly rustc and enabling
         // unstable features.
         .no_unstable_rust()
+        // .distrust_clang_mangling(true)
         // The input header we would like to generate
         // bindings for.
         .header("wrapper.h")
         // Include local path
-        .clang_arg("-I./postgresql-10beta1/src/interfaces/ecpg/include/")
+        .clang_arg("-I/usr/local/pgsql/include/")
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.
