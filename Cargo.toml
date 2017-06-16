@@ -5,6 +5,7 @@ authors = ["Kaare Rasmussen <kaare@jasonic.dk>"]
 build = "build.rs"
 
 [dependencies]
+libc = "0"
 
 [build-dependencies]
 bindgen = "0.25.0"
