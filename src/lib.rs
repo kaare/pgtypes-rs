@@ -4,6 +4,31 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 extern crate libc;
 
+pub fn numberic(i: i32) -> numeric {
+    let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+    println!("num1 {:?} will print!", num1);
+    let res = unsafe {PGTYPESnumeric_from_int(i, &mut num1)};
+    num1
+}
+
+impl numeric {
+    pub fn div(self, v: i32) -> numeric {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
+        res = unsafe { PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1) };
+        num1
+    }
+    pub fn str(self) -> String {
+        use std::ffi::CString;
+
+        let mut num3 = self;
+        let res = unsafe { CString::from_raw(PGTYPESnumeric_to_asc(&mut num3, 2)).into_string().unwrap() };
+        res
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
