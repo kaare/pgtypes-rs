@@ -12,7 +12,7 @@ use pgtypes::numeric;
         println!("test");
         let pi = numeric::from("22.0") / 7; // Well, not really π
         let mut area = pi * 2;  // Radius is 1
-        area = area + 4;
+        area += 4;
         println!("-------> area is: {}", area.str());
     }
 }

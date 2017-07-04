@@ -4,7 +4,7 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 extern crate libc;
 
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
 use std::ffi::CString;
 
 impl From<i32> for numeric {
@@ -46,6 +46,14 @@ impl Add<numeric> for numeric {
     }
 }
 
+impl AddAssign<numeric> for numeric {
+    fn add_assign (&mut self, mut v: numeric) {
+        unsafe {
+            PGTYPESnumeric_add(self, &mut v, self);
+        };
+    }
+}
+
 impl Sub<numeric> for numeric {
     type Output = Self;
 
@@ -56,6 +64,14 @@ impl Sub<numeric> for numeric {
             PGTYPESnumeric_sub(&mut num3, &mut v, &mut num1);
         };
         num1
+    }
+}
+
+impl SubAssign<numeric> for numeric {
+    fn sub_assign (&mut self, mut v: numeric) {
+        unsafe {
+            PGTYPESnumeric_sub(self, &mut v, self);
+        };
     }
 }
 
@@ -72,6 +88,14 @@ impl Mul<numeric> for numeric {
     }
 }
 
+impl MulAssign<numeric> for numeric {
+    fn mul_assign (&mut self, mut v: numeric) {
+        unsafe {
+            PGTYPESnumeric_mul(self, &mut v, self);
+        };
+    }
+}
+
 impl Div<numeric> for numeric {
     type Output = Self;
 
@@ -82,6 +106,14 @@ impl Div<numeric> for numeric {
             PGTYPESnumeric_div(&mut num3, &mut v, &mut num1);
         };
         num1
+    }
+}
+
+impl DivAssign<numeric> for numeric {
+    fn div_assign (&mut self, mut v: numeric) {
+        unsafe {
+            PGTYPESnumeric_div(self, &mut v, self);
+        };
     }
 }
 
@@ -100,6 +132,16 @@ impl Add<i32> for numeric {
     }
 }
 
+impl AddAssign<i32> for numeric {
+    fn add_assign (&mut self, v: i32) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_add(self, &mut num2, self);
+        };
+    }
+}
+
 impl Sub<i32> for numeric {
     type Output = Self;
 
@@ -112,6 +154,16 @@ impl Sub<i32> for numeric {
             PGTYPESnumeric_sub(&mut num3, &mut num2, &mut num1);
         };
         num1
+    }
+}
+
+impl SubAssign<i32> for numeric {
+    fn sub_assign (&mut self, v: i32) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_sub(self, &mut num2, self);
+        };
     }
 }
 
@@ -130,6 +182,16 @@ impl Mul<i32> for numeric {
     }
 }
 
+impl MulAssign<i32> for numeric {
+    fn mul_assign (&mut self, v: i32) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_mul(self, &mut num2, self);
+        };
+    }
+}
+
 impl Div<i32> for numeric {
     type Output = Self;
 
@@ -142,6 +204,16 @@ impl Div<i32> for numeric {
             PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1)
         };
         num1
+    }
+}
+
+impl DivAssign<i32> for numeric {
+    fn div_assign (&mut self, v: i32) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_div(self, &mut num2, self);
+        };
     }
 }
 
@@ -160,6 +232,16 @@ impl Add<f64> for numeric {
     }
 }
 
+impl AddAssign<f64> for numeric {
+    fn add_assign (&mut self, v: f64) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_double(v, &mut num2);
+            PGTYPESnumeric_add(self, &mut num2, self);
+        };
+    }
+}
+
 impl Sub<f64> for numeric {
     type Output = Self;
 
@@ -172,6 +254,16 @@ impl Sub<f64> for numeric {
             PGTYPESnumeric_sub(&mut num3, &mut num2, &mut num1);
         };
         num1
+    }
+}
+
+impl SubAssign<f64> for numeric {
+    fn sub_assign (&mut self, v: f64) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_double(v, &mut num2);
+            PGTYPESnumeric_sub(self, &mut num2, self);
+        };
     }
 }
 
@@ -190,6 +282,16 @@ impl Mul<f64> for numeric {
     }
 }
 
+impl MulAssign<f64> for numeric {
+    fn mul_assign (&mut self, v: f64) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_double(v, &mut num2);
+            PGTYPESnumeric_mul(self, &mut num2, self);
+        };
+    }
+}
+
 impl Div<f64> for numeric {
     type Output = Self;
 
@@ -202,6 +304,16 @@ impl Div<f64> for numeric {
             PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1)
         };
         num1
+    }
+}
+
+impl DivAssign<f64> for numeric {
+    fn div_assign (&mut self, v: f64) {
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        unsafe {
+            PGTYPESnumeric_from_double(v, &mut num2);
+            PGTYPESnumeric_div(self, &mut num2, self);
+        };
     }
 }
 
