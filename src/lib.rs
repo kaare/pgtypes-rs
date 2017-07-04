@@ -3,6 +3,7 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 extern crate libc;
 
 use std::ops::{Add, Sub, Mul, Div};
+use std::ffi::CString;
 
 impl Add<i32> for numeric {
     type Output = Self;
@@ -72,12 +73,15 @@ impl From<f64> for numeric {
     }
 }
 
-//impl From<&str> for numeric {
-//    fn from (v: &str) -> numeric {
-//        let num1: numeric = unsafe { *PGTYPESnumeric_new() };
-//        num1
-//    }
-//}
+impl<'a>  From<&'a str> for numeric {
+    fn from (v: &str) -> numeric {
+        // let mut c = v.as_bytes() as &mut [i8];
+        let c = CString::new(v).unwrap().into_raw();
+        let mut tmp: *mut i8 = 0 as *mut i8;
+        let num1 = unsafe {*PGTYPESnumeric_from_asc(c, &mut tmp)};
+        num1
+    }
+}
 
 impl numeric {
 //    pub fn div(self, v: i32) -> numeric {
