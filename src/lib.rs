@@ -1,18 +1,52 @@
-#![allow(non_camel_case_types)]
-
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 extern crate libc;
 
-pub fn numberic(i: i32) -> numeric {
-    let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
-    println!("num1 {:?} will print!", num1);
-    let res = unsafe {PGTYPESnumeric_from_int(i, &mut num1)};
-    num1
+use std::ops::{Add, Sub, Mul, Div};
+
+impl Add<i32> for numeric {
+    type Output = Self;
+
+    fn add (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
+        res = unsafe { PGTYPESnumeric_add(&mut num3, &mut num2, &mut num1) };
+        num1
+    }
 }
 
-impl numeric {
-    pub fn div(self, v: i32) -> numeric {
+impl Sub<i32> for numeric {
+    type Output = Self;
+
+    fn sub (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
+        res = unsafe { PGTYPESnumeric_sub(&mut num3, &mut num2, &mut num1) };
+        num1
+    }
+}
+
+impl Mul<i32> for numeric {
+    type Output = Self;
+
+    fn mul (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
+        res = unsafe { PGTYPESnumeric_mul(&mut num3, &mut num2, &mut num1) };
+        num1
+    }
+}
+
+impl Div<i32> for numeric {
+    type Output = Self;
+
+    fn div (self, v: i32) -> Self {
         let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
         let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
         let mut num3 = self;
@@ -20,6 +54,40 @@ impl numeric {
         res = unsafe { PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1) };
         num1
     }
+}
+
+impl From<i32> for numeric {
+    fn from (v: i32) -> numeric {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let res = unsafe {PGTYPESnumeric_from_int(v, &mut num1)};
+        num1
+    }
+}
+
+impl From<f64> for numeric {
+    fn from (v: f64) -> numeric {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let res = unsafe {PGTYPESnumeric_from_double(v, &mut num1)};
+        num1
+    }
+}
+
+//impl From<&str> for numeric {
+//    fn from (v: &str) -> numeric {
+//        let num1: numeric = unsafe { *PGTYPESnumeric_new() };
+//        num1
+//    }
+//}
+
+impl numeric {
+//    pub fn div(self, v: i32) -> numeric {
+//        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+//        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+//        let mut num3 = self;
+//        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
+//        res = unsafe { PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1) };
+//        num1
+//    }
     pub fn str(self) -> String {
         use std::ffi::CString;
 

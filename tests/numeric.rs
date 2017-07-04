@@ -4,14 +4,15 @@ extern crate pgtypes;
 
 #[cfg(test)]
 mod tests {
-use pgtypes::numberic;
-    #[test]
-fn numeric() {
-    println!("test");
-    let a = numberic(22);
-    println!("Now {:?} will print!", a);
-    let b = a.div(7);
-    println!("b {:?} will print!", b);
-    println!("b: {}", b.str());
-}
+
+use pgtypes::numeric;
+
+#[test]
+    fn numeric() {
+        println!("test");
+        let pi = numeric::from(22.0) / 7; // Well, not really π
+        let mut area = pi * 2;  // Radius is 1
+        area = area + 4;
+        println!("-------> area is: {}", area.str());
+    }
 }
