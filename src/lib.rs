@@ -5,58 +5,6 @@ extern crate libc;
 use std::ops::{Add, Sub, Mul, Div};
 use std::ffi::CString;
 
-impl Add<i32> for numeric {
-    type Output = Self;
-
-    fn add (self, v: i32) -> Self {
-        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num3 = self;
-        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
-        res = unsafe { PGTYPESnumeric_add(&mut num3, &mut num2, &mut num1) };
-        num1
-    }
-}
-
-impl Sub<i32> for numeric {
-    type Output = Self;
-
-    fn sub (self, v: i32) -> Self {
-        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num3 = self;
-        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
-        res = unsafe { PGTYPESnumeric_sub(&mut num3, &mut num2, &mut num1) };
-        num1
-    }
-}
-
-impl Mul<i32> for numeric {
-    type Output = Self;
-
-    fn mul (self, v: i32) -> Self {
-        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num3 = self;
-        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
-        res = unsafe { PGTYPESnumeric_mul(&mut num3, &mut num2, &mut num1) };
-        num1
-    }
-}
-
-impl Div<i32> for numeric {
-    type Output = Self;
-
-    fn div (self, v: i32) -> Self {
-        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
-        let mut num3 = self;
-        let mut res = unsafe { PGTYPESnumeric_from_int(v, &mut num2) };
-        res = unsafe { PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1) };
-        num1
-    }
-}
-
 impl From<i32> for numeric {
     fn from (v: i32) -> numeric {
         let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
@@ -79,6 +27,66 @@ impl<'a>  From<&'a str> for numeric {
         let c = CString::new(v).unwrap().into_raw();
         let mut tmp: *mut i8 = 0 as *mut i8;
         let num1 = unsafe {*PGTYPESnumeric_from_asc(c, &mut tmp)};
+        num1
+    }
+}
+
+impl Add<i32> for numeric {
+    type Output = Self;
+
+    fn add (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_add(&mut num3, &mut num2, &mut num1);
+        };
+        num1
+    }
+}
+
+impl Sub<i32> for numeric {
+    type Output = Self;
+
+    fn sub (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_sub(&mut num3, &mut num2, &mut num1);
+        };
+        num1
+    }
+}
+
+impl Mul<i32> for numeric {
+    type Output = Self;
+
+    fn mul (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_mul(&mut num3, &mut num2, &mut num1)
+        };
+        num1
+    }
+}
+
+impl Div<i32> for numeric {
+    type Output = Self;
+
+    fn div (self, v: i32) -> Self {
+        let mut num1: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num2: numeric = unsafe { *PGTYPESnumeric_new() };
+        let mut num3 = self;
+        unsafe {
+            PGTYPESnumeric_from_int(v, &mut num2);
+            PGTYPESnumeric_div(&mut num3, &mut num2, &mut num1)
+        };
         num1
     }
 }
